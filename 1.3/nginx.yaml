@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mynginxdeployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:latest
+        ports:
+        - containerPort: 80
+      initContainers:
+        - name: delay
+          image: busybox:1.28.3
+          command: ['sh', '-c', 'while true; do sleep 1; if nslookup nginx-svc; then exit 0; fi; done; exit 1']
