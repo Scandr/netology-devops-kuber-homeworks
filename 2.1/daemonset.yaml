@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: mydaemonset
+  namespace: task21
+spec:
+  selector:
+    matchLabels:
+      app: netology
+  template:
+    metadata:
+      labels:
+        app: netology
+    spec:
+      containers:
+      - name: multitool
+        image: praqma/network-multitool:latest
+#        command: ['sh', '-c', 'while true; sleep 5; do tail -1 /opt/mount/test_logs.txt >> /opt/mount/test_logs_output.txt; done']
+        env:
+        - name: HTTP_PORT
+          value: "8080"
+        ports:
+        - containerPort: 8080
+          name: http-port
+        volumeMounts:
+          - name: node-syslogs
+            mountPath: /opt/mount/syslog
+      volumes:
+      - name: node-syslogs
+        hostPath:
+          path: /var/log/syslog

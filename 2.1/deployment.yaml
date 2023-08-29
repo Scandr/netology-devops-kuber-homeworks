@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mydeployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: netology
+  template:
+    metadata:
+      labels:
+        app: netology
+    spec:
+      containers:
+      - name: busybox
+        image: busybox:latest
+        command: ['sh', '-c', 'i=0; while true; do echo test_logs$i >> /opt/mount/test_logs.txt; i=$((i+1)); sleep 5; done']
+        volumeMounts:
+          - name: test-logs
+            mountPath: /opt/mount
+      - name: multitool
+        image: praqma/network-multitool:latest
+        command: ['sh', '-c', 'while true; sleep 5; do tail -1 /opt/mount/test_logs.txt >> /opt/mount/test_logs_output.txt; done']
+        env:
+        - name: HTTP_PORT
+          value: "8080"
+        ports:
+        - containerPort: 8080
+          name: http-port
+        volumeMounts:
+          - name: test-logs
+            mountPath: /opt/mount
+      volumes:
+      - name: test-logs
+        hostPath:
+          path: /opt/volumes/task21

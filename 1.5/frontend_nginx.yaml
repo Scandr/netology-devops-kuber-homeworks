@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:latest
+        ports:
+        - containerPort: 80
+      initContainers:
+      - name: delay
+      # the version was picked to avoid problems with nslookup that can occure in versions >= 1.28.4
+        image: busybox:1.28.3
+        command: ['sh', '-c', 'while true; do sleep 1; if nslookup frontend-svc; then exit 0; fi; done; exit 1']
