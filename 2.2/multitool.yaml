@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: multitool
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: netology
+  template:
+    metadata:
+      labels:
+        app: netology
+    spec:
+      containers:
+      - name: multitool
+        image: praqma/network-multitool:latest
+        env:
+        - name: HTTP_PORT
+          value: "8080"
+        ports:
+        - containerPort: 8080
+          name: http-port
+        volumeMounts:
+          - name: task-nfs-pv
+            mountPath: /opt/mount
+      volumes:
+        - name: task-nfs-pv
+          persistentVolumeClaim:
+            claimName: task-nfs-pv-claim
