@@ -1,0 +1,13 @@
+# Path to html files for nginx - /usr/share/nginx/html
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: custom-html-page-configmap
+  namespace: task23
+data:
+  custom_page.html: |
+    <html>
+    <h1>This is a custom page</h1>
+    </br>
+    <h1>It is generated with ConfigMap </h1>
+    </html
