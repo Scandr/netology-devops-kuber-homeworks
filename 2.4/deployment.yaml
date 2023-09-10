@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mydeployment
+  namespace: task24
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: netology
+  template:
+    metadata:
+      labels:
+        app: netology
+    spec:
+      containers:
+      - name: busybox
+        image: busybox:latest
+        command: ['sh', '-c', 'i=0; while true; do echo test_logs$i >> /opt/test_logs.txt; i=$((i+1)); sleep 30; done']
+      - name: multitool
+        image: praqma/network-multitool:latest
+        env:
+        - name: HTTP_PORT
+          value: "8080"
+        ports:
+        - containerPort: 8080
+          name: http-port
+

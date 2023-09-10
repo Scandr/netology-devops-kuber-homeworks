@@ -1,0 +1,14 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: user01-role-binding
+  namespace: task24
+subjects:
+- kind: User
+  name: user01
+  apiGroup: rbac.authorization.k8s.io
+  namespace: task24
+roleRef:
+  kind: ClusterRole
+  name: pod-logs-desc
+  apiGroup: rbac.authorization.k8s.io

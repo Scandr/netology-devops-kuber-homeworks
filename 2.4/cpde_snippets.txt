@@ -1,0 +1,13 @@
+sudo openssl req -new -key /home/user01/user01.key \
+-out /home/user01/user01.csr \
+-subj "/CN=user01"
+
+sudo openssl x509 -req -in /home/user01/user01.csr \
+-CA /var/snap/microk8s/current/certs/ca.crt \
+-CAkey /var/snap/microk8s/current/certs/ca.key \
+-CAcreateserial \
+-out /home/user01/user01.crt -days 99999
+
+kubectl config set-credentials jean \
+--client-certificate=/home/user01/.config/user01.crt \
+--client-key=/home/user01/.config/user01.key

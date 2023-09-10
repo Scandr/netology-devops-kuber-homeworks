@@ -1,0 +1,19 @@
+apiVersion: v1
+clusters:
+- cluster:
+    certificate-authority-data: LS...0tCg==
+    server: https://158.160.33.228:16443
+  name: microk8s-cluster
+contexts:
+- context:
+    cluster: microk8s-cluster
+    user: user01
+  name: user01-context
+current-context: user01-context
+kind: Config
+preferences: {}
+users:
+- name: user01
+  user:
+    client-certificate: /home/user01/.kube/user01.crt
+    client-key: /home/user01/.kube/user01.key
