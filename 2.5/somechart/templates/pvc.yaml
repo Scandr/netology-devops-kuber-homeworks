@@ -2,7 +2,7 @@
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: {{ include "somechart.fullname" . }}
+  name: somechart
   labels:
     {{- include "somechart.labels" . | nindent 4 }}
 spec:
