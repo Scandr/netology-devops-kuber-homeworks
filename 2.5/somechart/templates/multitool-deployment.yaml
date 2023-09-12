@@ -1,0 +1,72 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "somechart.fullname" . }}-multitool
+  labels:
+    {{- include "somechart.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.multitool.autoscaling.enabled }}
+  replicas: {{ .Values.multitool.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "somechart.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.multitool.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "somechart.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.multitool.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "somechart.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.multitool.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}-multitool
+          securityContext:
+            {{- toYaml .Values.multitool.securityContext | nindent 12 }}
+          image: "{{ .Values.multitool.image.repository }}:{{ .Values.multitool.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.multitool.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.multitool.service.port }}
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+          resources:
+            {{- toYaml .Values.multitool.resources | nindent 12 }}
+          volumeMounts:
+            {{- toYaml .Values.multitool.volumeMounts | nindent 12 }}
+          {{ if .Values.multitool.containerCommand }}
+          command:
+            - "/bin/bash"
+            - "-c"
+            {{- range .Values.multitool.containerCommand }}
+            - {{ . }}
+            {{- end }}
+      {{- with .Values.multitool.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.multitool.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.multitool.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      volumes:
+        {{- toYaml .Values.nultitool.volumes | indent 8 }}

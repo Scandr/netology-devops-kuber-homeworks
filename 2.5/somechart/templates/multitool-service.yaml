@@ -1,13 +1,13 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "somechart.fullname" . }}
+  name: {{ include "somechart.fullname" . }}-multitool
   labels:
     {{- include "somechart.labels" . | nindent 4 }}
 spec:
-  type: {{ .Values.service.type }}
+  type: {{ .Values.multitool.service.type }}
   ports:
-    - port: {{ .Values.service.port }}
+    - port: {{ .Values.multitool.service.port }}
       targetPort: http
       protocol: TCP
       name: http
