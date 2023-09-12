@@ -69,4 +69,4 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       volumes:
-        {{- toYaml .Values.nultitool.volumes | indent 8 }}
+        {{- toYaml .Values.multitool.volumes | indent 8 }}
