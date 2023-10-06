@@ -13,12 +13,12 @@ spec:
     - Egress
   egress:
     - to:
-        - podSelector:
-            matchLabels:
-              app: cache
+      - podSelector:
+          matchLabels:
+            app: cache
       ports:
-        - protocol: TCP
-          port: 8080
+      - protocol: TCP
+        port: 8080
     # Access to Kube DNS
     - to:
       ports:
@@ -39,9 +39,9 @@ spec:
     - Egress
   ingress:
     - from:
-        - podSelector:
-            matchLabels:
-              app: frontend
+      - podSelector:
+          matchLabels:
+            app: frontend
       ports:
         - protocol: TCP
           port: 80
@@ -73,9 +73,9 @@ spec:
     - Egress
   ingress:
     - from:
-        - podSelector:
-            matchLabels:
-              app: cache
+      - podSelector:
+          matchLabels:
+            app: cache
       ports:
         - protocol: TCP
           port: 8080
