@@ -53,12 +53,9 @@ spec:
           app: backend
     ports:
       - protocol: TCP
-        port: 8081
+        port: 80
   # Access to Kube DNS
   - to:
-    - namespaceSelector:         # <<<
-        matchLabels:             # <<<
-          namespace: kube-system # <<<
     ports:
     - protocol: UDP
       port: 53
@@ -82,13 +79,10 @@ spec:
             app: cache
       ports:
         - protocol: TCP
-          port: 8080
+          port: 80
   egress:
   # Access to Kube DNS
   - to:
-    - namespaceSelector:         # <<<
-        matchLabels:             # <<<
-          namespace: kube-system # <<<
     ports:
     - protocol: UDP
       port: 53

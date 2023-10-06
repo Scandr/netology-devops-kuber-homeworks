@@ -17,6 +17,7 @@ spec:
           app: cache
     ports:
     - protocol: TCP
+    # open port of the container, not mapped service port
       port: 80
   - to:
     ports:
