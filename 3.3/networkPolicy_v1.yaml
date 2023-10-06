@@ -1,0 +1,58 @@
+---
+apiVersion: projectcalico.org/v3
+kind: GlobalNetworkPolicy
+metadata:
+  name: frontend-network-policy
+spec:
+  namespaceSelector: app
+  types:
+    - Ingress
+    - Egress
+  egress:
+    - action: Allow
+      protocol: TCP
+      destination:
+        selector: app == "cache"
+        ports:
+          - 8080
+---
+apiVersion: projectcalico.org/v3
+kind: GlobalNetworkPolicy
+metadata:
+  name: cache-network-policy
+spec:
+  namespaceSelector: app
+  types:
+    - Ingress
+    - Egress
+  inegress:
+    - action: Allow
+      protocol: TCP
+      destination:
+        selector: app == "frontend"
+        ports:
+          - 80
+  egress:
+    - action: Allow
+      protocol: TCP
+      destination:
+        selector: app == "backend"
+        ports:
+          - 8080
+---
+apiVersion: projectcalico.org/v3
+kind: GlobalNetworkPolicy
+metadata:
+  name: bqckend-network-policy
+spec:
+  namespaceSelector: app
+  types:
+    - Ingress
+    - Egress
+  inegress:
+    - action: Allow
+      protocol: TCP
+      destination:
+        selector: app == "cache"
+        ports:
+          - 8080
