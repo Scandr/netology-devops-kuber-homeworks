@@ -19,9 +19,6 @@ spec:
     - protocol: TCP
       port: 8080
   - to:
-    - namespaceSelector:         # <<<
-        matchLabels:             # <<<
-          namespace: kube-system # <<<
     ports:
     - protocol: UDP
       port: 53
