@@ -14,7 +14,7 @@ spec:
   - to:
     - podSelector:
         matchLabels:
-          app: cache
+          app: backend
     ports:
     - protocol: TCP
       port: 80
@@ -39,18 +39,11 @@ spec:
     - from:
       - podSelector:
           matchLabels:
-            app: frontend
+            app: backend
       ports:
         - protocol: TCP
           port: 80
   egress:
-  - to:
-    - podSelector:
-        matchLabels:
-          app: backend
-    ports:
-      - protocol: TCP
-        port: 80
   # Access to Kube DNS
   - to:
     ports:
@@ -73,11 +66,18 @@ spec:
     - from:
       - podSelector:
           matchLabels:
-            app: cache
+            app: frontend
       ports:
         - protocol: TCP
           port: 80
   egress:
+  - to:
+    - podSelector:
+        matchLabels:
+          app: cache
+    ports:
+      - protocol: TCP
+        port: 80
   # Access to Kube DNS
   - to:
     ports:
